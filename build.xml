@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE project>
+
+<project name="InstanceMatching" default="usage" basedir=".">
+	<property name="project-name" value="InstanceMatching" />
+
+	<property name="build" location="classes" />
+	<property name="lib" location="lib" />
+	<property name="src" location="src" />
+	<property name="etc" location="etc" />
+
+
+	<path id="Third-Party Libraries">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="usage" description="Build file usage info (default task)">
+		<echo message="-------------------------------------------------------" />
+		<echo message="This is the ant buidl.xml for InstanceMatching Project" />
+		<echo message="-------------------------------------------------------" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="compile" depends="clean, prepare">
+		<echo message="Compiling the source code!" />
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="on"  deprecation="no" failonerror="true" debug="true" source="1.7">
+			<classpath refid="Third-Party Libraries" />
+		</javac>
+	</target>
+
+	<target name="main" description="extract the selected wiki information" depends="compile">
+		<java classname="main.Preprocess" classpath="${build}" fork="true" maxmemory="300000m">
+			<classpath refid="Third-Party Libraries" />
+			<arg line="${cmdline}" />
+		</java>
+	</target>
+	<tstamp> <format property="TIMESTAMP" pattern="yyyyMMddHHmmss"/> </tstamp>
+	<record name="debug.${TIMESTAMP}.txt" loglevel="verbose" append="no" action="start"/>
+</project>
+
