@@ -1,23 +1,17 @@
 package preprocessing.wikipedia;
 
-import java.util.Vector;
-
-import preprocessing.util.ChineseUtil;
-
 import edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import edu.jhu.nlp.wikipedia.WikiPage;
 
-public class ZHLinkExtractor extends Extractor {
-
-	public ZHLinkExtractor() {
+public class FRArticleLengthExtractor extends Extractor{
+	public FRArticleLengthExtractor() {
 		super();
 	}
 
-	public ZHLinkExtractor(String xmlName, String outputFile) {
+	public FRArticleLengthExtractor(String xmlName, String outputFile) {
 		super();
 		setParser(xmlName);
 		setWriter(outputFile);
-
 	}
 
 	@Override
@@ -36,14 +30,10 @@ public class ZHLinkExtractor extends Extractor {
 					line.append(title);
 					line.append("\t\t");
 
-					Vector<String> links = page.getLinks();
-					if (links != null) {
-						for (int i = 0; i < links.size(); i++) {
-							String temp = ChineseUtil.translate(links.get(i)
-									.trim());
-							line.append(temp + ";");
-						}
-					}
+					String content = page.getText();
+					int len=content.length();
+					line.append(len);
+
 					write(line.toString().replaceAll("\n", ""));
 				}
 			});

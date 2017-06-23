@@ -14,10 +14,12 @@ import preprocessing.util.*;
 import preprocessing.wikipedia.*;
 
 public class Preprocess {
-	private static String Wiki_Dump_Dir = "/data/dump/enwiki";
+	private static String Wiki_Dump_Dir = "dump/enwiki/2017";
+	private static String Wikifr_Dump_Dir = "dump/frwiki";
 	private static String Temp_Dir = "etc/temp/";
-	private static String Output_Dir = "/data/xlore20170309/wikiExtractResult/";
-	private final static String zhwikiFilePath = "/data/dump/zhwiki/zhwiki-20160203-pages-articles.xml";
+	private static String Output_Dir = "xlore20170407/wikiExtractResult/";
+	private final static String zhwikiFilePath = "dump/zhwiki/2016/zhwiki-20160203-pages-articles.xml";
+	private final static String frwikiFilePath = "dump/frwiki/frwiki-20161120-pages-articles-multistream.xml";
 
 	public static void init() {
 
@@ -37,13 +39,14 @@ public class Preprocess {
 		init();
 		// cleanSpecialCharacter(new File(Wiki_Dump_Dir));
 
-		extractZhwiki(Output_Dir);
-		extractEnwiki(Output_Dir);
+		//extractZhwiki(Output_Dir);
+		//extractZhwiki(Output_Dir);
+		extractFrwiki(Output_Dir);
 
 //		cleanSpecialCharacter(new File(Output_Dir));
 
-		infoboxTemplate("en");
-		infoboxTemplate("zh");
+//		infoboxTemplate("en");
+		//infoboxTemplate("zh");
 //
 //		trimInfobox("en");
 //		trimInfobox("zh");
@@ -54,7 +57,7 @@ public class Preprocess {
 		/* For French */
 		// String yourWikiDumpPath = "your french wikipedia dump path";
 		// String yourInfoboxPath = "the output path of your extracted infobox";
-		// extractFrenchInfobox(yourWikiDumpPath, yourInfoboxPath);
+		//extractFrenchInfobox(Wikifr_Dump_Dir, yourInfoboxPath);
 	}
 
 	private static void extractFrenchInfobox(String iPath, String oPath)
@@ -210,6 +213,40 @@ public class Preprocess {
 				templateName.replaceAll("_", " ").replaceAll("\\s+", " "))
 				.toLowerCase();
 	}
+	private static void extractFrwiki(String outputDir) throws IOException {
+
+		System.out.println(Wikifr_Dump_Dir);
+
+		//extractFrhwikiTitle(frwikiFilePath, outputDir + "frwiki-title.dat");//
+//
+//		 extractFrwikiInfobox(frwikiFilePath, outputDir + "frwiki-infobox-tmp.dat");//
+//		 extractFrwikiCategory(frwikiFilePath, outputDir +"frwiki-category.dat");//
+//		 extractFrwikiCategoryParent(frwikiFilePath, outputDir + "frwiki-category-parent.dat"); //
+
+//		 extractFrwikiText(frwikiFilePath, outputDir + "frwiki-text.dat"); // Stackoverflow error: WikiTextParser:348
+
+//		 extractFrwikiLanlinks(frwikiFilePath, outputDir + "frwiki-fr-en-langlink.dat");//
+//
+//		 extractFrwikiCategoryLanlinks(frwikiFilePath, outputDir
+//		 + "frwiki-category-langlink.dat"); //BLANK FILE ???
+//		 extractFrwikiRedirect(frwikiFilePath, outputDir +
+//		 "frwiki-redirect.dat"); //
+//		 extractFrwikiTemplate(frwikiFilePath, outputDir
+//		 + "frwiki-template-name.dat");//
+
+//		 extractFrwikiOutlink(frwikiFilePath, outputDir +
+//				 "frwiki-outlink.dat");//
+		 generateInlink(outputDir + "frwiki-outlink.dat", outputDir
+				 + "frwiki-inlink.dat");
+
+//		 extractFrwikiAbstract(frwikiFilePath, outputDir + "frwiki-abstract.dat");//
+		 extractFrwikiLength(frwikiFilePath, outputDir
+		 + "frwiki-length.dat");
+
+		 extractFrwikiLinkText(zhwikiFilePath, outputDir + "frwiki-linktext.dat");
+
+//		extractZhwikiFirstImage(frwikiFilePath,outputDir+"frwiki-firstimage.dat");
+	}
 
 	private static void extractEnwiki(String outputDir) throws IOException {
 
@@ -222,7 +259,7 @@ public class Preprocess {
 		for (int i = 0; i < enwikiFileNames.size(); i++)
 			System.out.println(enwikiFileNames);
 
-//		extractEnwikiID(enwikiFileNames, outputDir + "enwiki-ID.dat");
+		extractEnwikiID(enwikiFileNames, outputDir + "enwiki-ID.dat");
 //
 //		extractEnwikiTitle(enwikiFileNames, outputDir + "enwiki-title.dat");
 //		extractEnwikiTitleLocation(enwikiFileNames, outputDir
@@ -259,8 +296,8 @@ public class Preprocess {
 //		extractEnwikiLength(enwikiFileNames, outputDir
 //				+ "enwiki/enwiki-length.dat");
 //
-		extractEnwikiLinkText(enwikiFileNames, outputDir
-				+ "enwiki/enwiki-linktext.dat");
+//		extractEnwikiLinkText(enwikiFileNames, outputDir
+//				+ "enwiki/enwiki-linktext.dat");
 //
 //		extractLinkMention(enwikiFileNames, outputDir
 //				+ "enwiki-linkmention.dat");
@@ -268,7 +305,7 @@ public class Preprocess {
 
 	private static void extractZhwiki(String outputDir) throws IOException {
 		
-//		 extractZhwikiTitle(zhwikiFilePath, outputDir + "zhwiki-title.dat");
+		 extractZhwikiTitle(zhwikiFilePath, outputDir + "zhwiki-title.dat");
 //
 //		 extractZhwikiInfobox(zhwikiFilePath, outputDir
 //		 + "zhwiki-infobox-tmp.dat");
@@ -284,8 +321,8 @@ public class Preprocess {
 //
 //		 extractZhwikiRedirect(zhwikiFilePath, outputDir +
 //		 "zhwiki-redirect.dat");
-		 extractZhwikiTemplate(zhwikiFilePath, outputDir
-		 + "zhwiki-template-name.dat");
+//		 extractZhwikiTemplate(zhwikiFilePath, outputDir
+//		 + "zhwiki-template-name.dat");
 //
 //		 extractZhwikiOutlink(zhwikiFilePath, outputDir +
 //				 "zhwiki-outlink.dat");
@@ -357,6 +394,7 @@ public class Preprocess {
 
 	public static void generateInlink(String outlinkPath, String inlinkPath)
 			throws IOException {
+		System.out.println("Start generating inlink...");
 		InlinkGenerator.generate(outlinkPath, inlinkPath);
 	}
 
@@ -674,7 +712,7 @@ public class Preprocess {
 		System.out.println("Start extracting enwiki LinkText...");
 		HashSet<String> set = new HashSet<String>();
 		BufferedReader in = new BufferedReader(new FileReader(
-				"/data/xlore20160223/wikiExtractResult/enwiki-title.dat"));
+				Output_Dir + "enwiki-title.dat"));
 		String line = null;
 		while (null != (line = in.readLine())) {
 			set.add(line.trim());
@@ -691,6 +729,150 @@ public class Preprocess {
 
 		FileManipulator.outputOneToMany(map,enLinkTextPath,"\t\t",";;");
 //		BufferedWriter out = new BufferedWriter(new FileWriter(enLinkTextPath));
+//		for (Map.Entry<String, HashSet<String>> e : map.entrySet()) {
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(e.getKey() + "\t\t");
+//			for (String element : e.getValue())
+//				sb.append(element + ";");
+//			if (sb.charAt(sb.length() - 1) == ';')
+//				sb.deleteCharAt(sb.length() - 1);
+//			out.write(sb.toString() + "\n");
+//			out.flush();
+//		}
+//		out.close();
+	}
+	
+	public static void extractFrhwikiTitle(String wikiArticle, String frTitlePath)
+			throws IOException {
+		System.out.println("Start extracting frwiki title...");
+		FRTItleExtractor te = new FRTItleExtractor(wikiArticle, frTitlePath);
+		te.extract();
+		te.closeWriter();
+	}
+	
+	public static void extractFrwikiInfobox(String wikiArticle,
+			String frInfoboxPath) throws IOException {
+		System.out.println("Start extracting frwiki infobox...");
+		FRInfoboxExtractor te = new FRInfoboxExtractor(wikiArticle,
+				frInfoboxPath);
+		te.extract();
+		te.closeWriter();
+	}
+
+	public static void extractFrwikiOutlink(String wikiArticle,
+			String frOutlinkPath) throws IOException {
+		System.out.println("Start extracting frwiki outlink...");
+		FRLinkExtractor te = new FRLinkExtractor(wikiArticle, frOutlinkPath);
+		te.extract();
+		te.closeWriter();
+	}
+
+	public static void extractFrwikiCategory(String wikiArticle,
+			String frCatePath) throws IOException {
+		System.out.println("Start extracting frwiki category...");
+		CategoryExtractor te = new CategoryExtractor(wikiArticle,
+				frCatePath);
+		te.extract();
+		te.closeWriter();
+	}
+
+	public static void extractFrwikiCategoryParent(String wikiArticle,
+			String frCateParentPath) throws IOException {
+		System.out.println("Start extracting frwiki category page...");
+		FRCategoryParentExtractor cpe = new FRCategoryParentExtractor(wikiArticle,
+				frCateParentPath);
+		cpe.extract();
+		cpe.closeWriter();
+	}
+	
+	public static void extractFrwikiLength(String wikiArticle,
+			String frLengthPath) throws IOException {
+		System.out.println("Start extracting frwiki length...");
+		FRArticleLengthExtractor zale = new FRArticleLengthExtractor(
+				wikiArticle, frLengthPath);
+		zale.extract();
+		zale.closeWriter();
+	}
+
+	public static void extractFrwikiRedirect(String wikiArticle,
+			String frRedirectPath) throws IOException {
+		System.out.println("Start extracting frwiki redirect...");
+		FRRedirectExtractor re = new FRRedirectExtractor(wikiArticle,
+				frRedirectPath);
+		re.extract();
+		re.closeWriter();
+	}
+
+	public static void extractFrwikiLanlinks(String wikiArticle,
+			String frLanlinkPath) throws IOException {
+		System.out.println("Start extracting frwiki langlink...");
+		LanLinkExtractor lle = new LanLinkExtractor(wikiArticle, frLanlinkPath,
+				Language.FRENCH, Language.ENGLISH);
+		lle.extract();
+		lle.closeWriter();
+	}
+	//?
+
+	public static void extractFrwikiCategoryLanlinks(String wikiArticle,
+			String frCateLanlinkPath) throws IOException {
+		System.out.println("Start extracting frwiki category langlink...");
+		CategoryLanLinkExtractor lle = new CategoryLanLinkExtractor(
+				wikiArticle, frCateLanlinkPath, Language.FRENCH,
+				Language.ENGLISH);
+		lle.extract();
+		lle.closeWriter();
+	}
+
+	public static void extractFrwikiAbstract(String wikiArticle,
+			String zhAbstractPath) throws IOException {
+		System.out.println("Start extracting frwiki abstract...");
+		AbstractExtractor zae = new AbstractExtractor(wikiArticle,
+				zhAbstractPath);
+		zae.extract();
+		zae.closeWriter();
+	}
+	//?
+
+	public static void extractFrwikiText(String wikiArticle, String frTextPath)
+			throws IOException {
+		System.out.println("Start extracting frwiki text...");
+		TextExtractor zae = new TextExtractor(wikiArticle, frTextPath);
+		zae.extract();
+		zae.closeWriter();
+	}
+
+	public static void extractFrwikiTemplate(String wikiArticle,
+			String frTemplatePath) throws IOException {
+		System.out.println("Start extracting frwiki template...");
+		// FileUtils
+		// .cleanDirectory(new File(
+		// "/home/keg/wzg/Data/Wikipedia/Extracted Data/zhwiki/template/"));
+		FRTemplateExtractor zae = new FRTemplateExtractor(wikiArticle,
+				frTemplatePath);
+		zae.extract();
+		zae.closeWriter();
+	}
+	
+	public static void extractFrwikiLinkText(String wikiArticle,
+			String frLinkTextPath) throws IOException {
+		System.out.println("Start extracting frwiki LinkText...");
+		HashSet<String> set = new HashSet<String>();
+		BufferedReader in = new BufferedReader(
+				new FileReader(
+						Output_Dir + "/frwiki-title.dat"));
+		String line = null;
+		while (null != (line = in.readLine())) {
+			set.add(line.trim());
+		}
+		in.close();
+
+		HashMap<String, Set<String>> map = new HashMap<>();
+		FRLinkTextExtractor te = new FRLinkTextExtractor(wikiArticle, map, set);
+		te.extract();
+		te.closeWriter();
+
+		FileManipulator.outputOneToMany(map,frLinkTextPath,"\t\t",";;");
+//		BufferedWriter out = new BufferedWriter(new FileWriter(zhLinkTextPath));
 //		for (Map.Entry<String, HashSet<String>> e : map.entrySet()) {
 //			StringBuilder sb = new StringBuilder();
 //			sb.append(e.getKey() + "\t\t");
@@ -831,7 +1013,7 @@ public class Preprocess {
 		HashSet<String> set = new HashSet<String>();
 		BufferedReader in = new BufferedReader(
 				new FileReader(
-						"/data/xlore20160223/wikiExtractResult/zhwiki-title.dat"));
+						Output_Dir + "/zhwiki-title.dat"));
 		String line = null;
 		while (null != (line = in.readLine())) {
 			set.add(line.trim());

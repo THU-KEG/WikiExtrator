@@ -7,13 +7,13 @@ import preprocessing.util.ChineseUtil;
 import edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import edu.jhu.nlp.wikipedia.WikiPage;
 
-public class ZHLinkExtractor extends Extractor {
+public class FRLinkExtractor extends Extractor {
 
-	public ZHLinkExtractor() {
+	public FRLinkExtractor() {
 		super();
 	}
 
-	public ZHLinkExtractor(String xmlName, String outputFile) {
+	public FRLinkExtractor(String xmlName, String outputFile) {
 		super();
 		setParser(xmlName);
 		setWriter(outputFile);
@@ -39,8 +39,7 @@ public class ZHLinkExtractor extends Extractor {
 					Vector<String> links = page.getLinks();
 					if (links != null) {
 						for (int i = 0; i < links.size(); i++) {
-							String temp = ChineseUtil.translate(links.get(i)
-									.trim());
+							String temp = links.get(i).trim();
 							line.append(temp + ";");
 						}
 					}

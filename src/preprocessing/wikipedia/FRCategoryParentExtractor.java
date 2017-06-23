@@ -7,13 +7,13 @@ import java.util.regex.Pattern;
 import edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import edu.jhu.nlp.wikipedia.WikiPage;
 
-public class CategoryParentExtractor extends Extractor {
+public class FRCategoryParentExtractor extends Extractor {
 
-	public CategoryParentExtractor() {
+	public FRCategoryParentExtractor() {
 		super();
 	}
 
-	public CategoryParentExtractor(String xmlName, String outputFile) {
+	public FRCategoryParentExtractor(String xmlName, String outputFile) {
 		super();
 		setParser(xmlName);
 		setWriter(outputFile);
