@@ -128,8 +128,8 @@ public class WikiPage {
 	 * @return a list of categories the page belongs to, null if this a
 	 *         redirection/disambiguation page
 	 */
-	public Vector<String> getCategories() {
-		return wikiTextParser.getCategories();
+	public Vector<String> getCategories(String language) {
+		return wikiTextParser.getCategories(language);
 	}
 
 	/**

@@ -2,16 +2,21 @@ package preprocessing.wikipedia;
 
 import java.util.Vector;
 
+import edu.jhu.nlp.language.Language;
 import edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import edu.jhu.nlp.wikipedia.WikiPage;
 
 public class CategoryExtractor extends Extractor {
+	
+	private String language = Language.ENGLISH;
+	
 	public CategoryExtractor() {
 		super();
 	}
 
-	public CategoryExtractor(String xmlName, String outputFile) {
+	public CategoryExtractor(String xmlName, String outputFile, String language) {
 		super();
+		this.language = language;
 		setParser(xmlName);
 		setWriter(outputFile);
 	}
@@ -33,7 +38,7 @@ public class CategoryExtractor extends Extractor {
 					line.append("\t\t");
 
 					// categories
-					Vector<String> categories = page.getCategories();
+					Vector<String> categories = page.getCategories(language);
 					String categoryString = "";
 					if (categories != null) {
 						for (int i = 0; i < categories.size(); i++) {

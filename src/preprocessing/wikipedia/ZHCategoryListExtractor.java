@@ -38,7 +38,7 @@ public class ZHCategoryListExtractor extends Extractor{
 					
 					//title=ChineseUtil.translate(title);
 					
-					Vector<String> categories=page.getCategories();
+					Vector<String> categories=page.getCategories("ZH");
 					if(categories!=null){
 						for(int i=0;i<categories.size();i++){
 							String cate=categories.get(i);

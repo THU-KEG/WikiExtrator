@@ -236,8 +236,8 @@ public class Preprocess {
 
 //		 extractFrwikiOutlink(frwikiFilePath, outputDir +
 //				 "frwiki-outlink.dat");//
-		 generateInlink(outputDir + "frwiki-outlink.dat", outputDir
-				 + "frwiki-inlink.dat");
+//		 generateInlink(outputDir + "frwiki-outlink.dat", outputDir
+//				 + "frwiki-inlink.dat"); //
 
 //		 extractFrwikiAbstract(frwikiFilePath, outputDir + "frwiki-abstract.dat");//
 		 extractFrwikiLength(frwikiFilePath, outputDir
@@ -519,7 +519,7 @@ public class Preprocess {
 		for (String filename : sourceFilenames) {
 			System.out.println(">>Process " + filename);
 			CategoryExtractor ce = new CategoryExtractor(filename, filename
-					+ "-category.tmp");
+					+ "-category.tmp",Language.ENGLISH);
 			ce.extract();
 			ce.closeWriter();
 			tmpFilenames.add(filename + "-category.tmp");
@@ -771,7 +771,7 @@ public class Preprocess {
 			String frCatePath) throws IOException {
 		System.out.println("Start extracting frwiki category...");
 		CategoryExtractor te = new CategoryExtractor(wikiArticle,
-				frCatePath);
+				frCatePath,Language.FRENCH);
 		te.extract();
 		te.closeWriter();
 	}

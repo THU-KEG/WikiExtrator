@@ -66,9 +66,9 @@ public class WikiTextParser {
 		return wikiText;
 	}
 
-	public Vector<String> getCategories() {
+	public Vector<String> getCategories(String language) {
 		if (pageCats == null)
-			parseCategories();
+			parseCategories(language);
 		return pageCats;
 	}
 
@@ -78,9 +78,12 @@ public class WikiTextParser {
 		return pageLinks;
 	}
 
-	private void parseCategories() {
+	private void parseCategories(String language) {
 		pageCats = new Vector<String>();
 		Pattern catPattern = Pattern.compile("\\[\\[Category:(.*?)\\]\\]",
+				Pattern.MULTILINE);
+		if(language == Language.FRENCH)
+			catPattern = Pattern.compile("\\[\\[Catégorie:(.*?)\\]\\]",
 				Pattern.MULTILINE);
 		Matcher matcher = catPattern.matcher(wikiText);
 		while (matcher.find()) {

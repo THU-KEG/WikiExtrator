@@ -36,7 +36,7 @@ public class ZHCategoryExtractor extends Extractor {
 					line.append(title);
 					line.append("\t\t");
 
-					Vector<String> categories = page.getCategories();
+					Vector<String> categories = page.getCategories("ZH");
 					String categoryString = "";
 					if (categories != null) {
 						for (int i = 0; i < categories.size(); i++) {
