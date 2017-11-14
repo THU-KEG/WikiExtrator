@@ -1,5 +1,10 @@
 package preprocessing.wikipedia;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang.StringUtils;
 
 
@@ -8,6 +13,8 @@ import edu.jhu.nlp.wikipedia.WikiPage;
 
 public class FRRedirectExtractor extends Extractor {
 
+	HashMap<String, HashSet<String>> redirects;
+	
 	public FRRedirectExtractor() {
 		super();
 	}
@@ -16,6 +23,7 @@ public class FRRedirectExtractor extends Extractor {
 		super();
 		setParser(xmlName);
 		setWriter(outputFile);
+		redirects = new HashMap<String, HashSet<String>>();
 	}
 
 	@Override
@@ -41,8 +49,14 @@ public class FRRedirectExtractor extends Extractor {
 					if (title.equals(redirect))
 						return;
 
-//					System.out.println("r:"+title + "\t\t" + redirect);
-					write(title + "\t\t" + redirect);
+					if(redirects.containsKey(redirect)) {
+						redirects.get(redirect).add(title);
+						
+					}
+					else{
+						redirects.put(redirect, new HashSet<String>(Arrays.asList(title)));
+					}
+					//write(title + "\t\t" + redirect);
 				}
 			});
 			parser.parse();
@@ -50,13 +64,13 @@ public class FRRedirectExtractor extends Extractor {
 			e.printStackTrace();
 		}
 	}
-
-	
-	private boolean isInfobox(String s) {
-		s = s.toLowerCase();
-		if (!s.startsWith("modèle:"))
-			return false;
-		s = s.substring(7);
-		return s.startsWith("infobox");
+	public void writeToFile() {
+		for(Entry<String, HashSet<String>> redirect_entry : redirects.entrySet()) {
+			String line = redirect_entry.getKey() + "\t\t";
+			for(String redirect_value : redirect_entry.getValue()) {
+				line += redirect_value.trim().replaceAll("\n", "") + ", ";
+			}
+			write(line);
+		}
 	}
 }

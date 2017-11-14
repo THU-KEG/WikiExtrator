@@ -42,7 +42,7 @@ public class WikiTextParser {
 		if (matcher.find()) {
 			redirect = true;
 			if (matcher.groupCount() == 1)
-				redirectString = matcher.group(1).trim();
+				redirectString = matcher.group(1).trim().replaceAll("\n", "");;
 		}
 		matcher = stubPattern.matcher(wikiText);
 		stub = matcher.find();
@@ -112,7 +112,7 @@ public class WikiTextParser {
 	public String getPlainText(String text) {
 		text = text.replaceAll("\n", "");
 		// text = text.replaceAll("\\{\\{.*?\\}\\}", " ");
-		text = stripBrace(text);
+		//TEMP text = stripBrace(text);
 
 		// strip <> tags
 		text = Pattern.compile("<ref>.*?</ref>", Pattern.DOTALL).matcher(text)
@@ -490,7 +490,7 @@ public class WikiTextParser {
 	public boolean isDisambiguationPage() {
 		return disambiguation;
 	}
-
+	//[[en:"title"]]
 	public String getTranslatedTitle(String languageCode) {
 		Pattern pattern = Pattern.compile("^\\[\\[" + languageCode
 				+ ":(.*?)\\]\\]$", Pattern.MULTILINE);

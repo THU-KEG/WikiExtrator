@@ -20,8 +20,11 @@ public class Preprocess {
 	private static String Output_Dir = "xlore20170407/wikiExtractResult/";
 	private final static String zhwikiFilePath = "dump/zhwiki/2016/zhwiki-20160203-pages-articles.xml";
 	private final static String frwikiFilePath = "dump/frwiki/frwiki-20161120-pages-articles-multistream.xml";
+	//TEMP
+	//frwikiFilePath = "dump/frwiki/frwiki-20161120-pages-articles-multistream.xml";
 
 	public static void init() {
+		System.out.println(System.getProperty("user.dir"));
 
 		// BufferedReader br;
 		// try {
@@ -219,7 +222,7 @@ public class Preprocess {
 
 		//extractFrhwikiTitle(frwikiFilePath, outputDir + "frwiki-title.dat");//
 //
-//		 extractFrwikiInfobox(frwikiFilePath, outputDir + "frwiki-infobox-tmp.dat");//
+//		 extractFrwikiInfobox(frwikiFilePath, outputDir + "frwiki-infobox.dat");//
 //		 extractFrwikiCategory(frwikiFilePath, outputDir +"frwiki-category.dat");//
 //		 extractFrwikiCategoryParent(frwikiFilePath, outputDir + "frwiki-category-parent.dat"); //
 
@@ -229,8 +232,8 @@ public class Preprocess {
 //
 //		 extractFrwikiCategoryLanlinks(frwikiFilePath, outputDir
 //		 + "frwiki-category-langlink.dat"); //BLANK FILE ???
-//		 extractFrwikiRedirect(frwikiFilePath, outputDir +
-//		 "frwiki-redirect.dat"); //
+		 extractFrwikiRedirect(frwikiFilePath, outputDir +
+		 "frwiki-redirect.dat"); //
 //		 extractFrwikiTemplate(frwikiFilePath, outputDir
 //		 + "frwiki-template-name.dat");//
 
@@ -240,10 +243,10 @@ public class Preprocess {
 //				 + "frwiki-inlink.dat"); //
 
 //		 extractFrwikiAbstract(frwikiFilePath, outputDir + "frwiki-abstract.dat");//
-		 extractFrwikiLength(frwikiFilePath, outputDir
-		 + "frwiki-length.dat");
-
-		 extractFrwikiLinkText(zhwikiFilePath, outputDir + "frwiki-linktext.dat");
+//		 extractFrwikiLength(frwikiFilePath, outputDir
+//		 + "frwiki-length.dat");
+//
+//		 extractFrwikiLinkText(zhwikiFilePath, outputDir + "frwiki-linktext.dat");
 
 //		extractZhwikiFirstImage(frwikiFilePath,outputDir+"frwiki-firstimage.dat");
 	}
@@ -800,6 +803,7 @@ public class Preprocess {
 		FRRedirectExtractor re = new FRRedirectExtractor(wikiArticle,
 				frRedirectPath);
 		re.extract();
+		re.writeToFile();
 		re.closeWriter();
 	}
 
