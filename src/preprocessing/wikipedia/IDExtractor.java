@@ -39,7 +39,6 @@ public class IDExtractor extends Extractor {
 					line.append("\t\t");
 
 					String wikitext = page.getPlainText(page.getID());
-
 //					String wikitext="xxx";
 					line.append((wikitext == null) ? "" : wikitext);
 					write(line.toString().replaceAll("\n", "").replaceAll("\r",

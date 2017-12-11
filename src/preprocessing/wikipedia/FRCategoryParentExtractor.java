@@ -35,7 +35,7 @@ public class FRCategoryParentExtractor extends Extractor {
 						return;
 
 					StringBuilder line = new StringBuilder();
-					line.append(title.substring(9));
+					line.append(title.substring(10));
 					line.append("\t\t");
 
 					String wikitext = page.getPlainText(page.getWikiText());

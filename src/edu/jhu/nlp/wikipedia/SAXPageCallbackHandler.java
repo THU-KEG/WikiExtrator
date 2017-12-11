@@ -12,6 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class SAXPageCallbackHandler extends DefaultHandler {
 
+	private boolean insideRevision = false;
 	private PageCallbackHandler pageHandler;
 	private WikiPage currentPage;
 	private String currentTag;
@@ -42,9 +43,15 @@ public class SAXPageCallbackHandler extends DefaultHandler {
 		if (qName.equals("redirect")) {
 			currentRedirect = attr.getValue("title");
 		}
+		if (qName.equals("revision")) {
+			insideRevision = true;
+		}
 	}
 
 	public void endElement(String uri, String name, String qName) {
+		if (qName.equals("revision")) {
+			insideRevision = false;
+		}
 		if (qName.equals("page")) {
 			currentPage.setTitle(currentTitle.toString());
 			currentPage.setID(currentID.toString());
@@ -63,11 +70,10 @@ public class SAXPageCallbackHandler extends DefaultHandler {
 			currentTitle = currentTitle.append(ch, start, length);
 		}
 		// TODO: To avoid looking at the revision ID, only the first ID is
-		// taken.
+		// taken. MANUALLY CORRECTED 2017/11/12
 		// I'm not sure how big the block size is in each call to characters(),
 		// so this may be unsafe.
-		else if ((currentTag.equals("id")) && (currentID.length() == 0)) {
-			currentID = new StringBuilder();
+		else if ((currentTag.equals("id")) && !insideRevision) {
 			currentID.append(ch, start, length);
 		} else if (currentTag.equals("text")
 				|| (currentTag.equals("br") && brTag)
