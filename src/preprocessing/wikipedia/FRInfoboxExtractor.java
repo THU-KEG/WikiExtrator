@@ -69,7 +69,7 @@ public class FRInfoboxExtractor extends Extractor {
 				return null;
 			line.append(infoboxName.replaceAll("\\s+", " ").trim() + ":::::");
 		} else {
-			String[] tmp = infoboxName.split("|");
+			String[] tmp = infoboxName.split("\\|");
 			if (tmp[0].trim().length() == 0)
 				return null;
 			line.append(tmp[0].replaceAll("\\s+", " ").trim() + ":::::");

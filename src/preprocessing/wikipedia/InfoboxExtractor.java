@@ -65,7 +65,7 @@ public class InfoboxExtractor extends Extractor {
 		String infoboxDumpRaw = infobox.dumpRaw();
 		int firstline = StringUtils.indexOf(infoboxDumpRaw, '\n');
 		String infoboxName = infoboxDumpRaw.substring(2, firstline);
-		if (!infoboxName.contains("|")) {
+		if (!infoboxName.contains("\\|")) {
 			if (infoboxName.trim().length() == 0)
 				return null;
 			
