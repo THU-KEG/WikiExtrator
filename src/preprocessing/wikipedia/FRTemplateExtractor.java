@@ -27,7 +27,7 @@ public class FRTemplateExtractor extends Extractor {
 					// if (page.isRedirect())
 					// return;
 
-					String title = page.getTitle();
+					String title = page.getTitle().replace("\n", "").trim();
 
 					if (!isInfobox(title))
 						return;

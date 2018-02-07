@@ -139,7 +139,13 @@ public abstract class Extractor {
 				|| title.startsWith("category:")
 				|| title.startsWith("wikipedia:")
 				|| title.startsWith("mediawiki:")
-				|| title.startsWith("portal:") || title.startsWith("help:")) {
+				|| title.startsWith("portal:") || title.startsWith("help:")
+				
+				|| title.startsWith("modèle:") || title.startsWith("fichier:")
+				|| title.startsWith("catégorie:")
+				|| title.startsWith("wikipédia:")
+				|| title.startsWith("mediawiki:")
+				|| title.startsWith("portail:") || title.startsWith("aide:") ){
 			return false;
 		}
 		return true;
