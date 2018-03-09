@@ -20,8 +20,6 @@ public class Preprocess {
 	private static String Output_Dir = "xlore20170407/wikiExtractResult/";
 	private final static String zhwikiFilePath = "dump/zhwiki/2016/zhwiki-20160203-pages-articles.xml";
 	private final static String frwikiFilePath = "dump/frwiki/frwiki-20161120-pages-articles-multistream.xml";
-	//TEMP
-	//frwikiFilePath = "dump/frwiki/frwiki-20161120-pages-articles-multistream.xml";
 
 	public static void init() {
 		System.out.println(System.getProperty("user.dir"));
@@ -42,7 +40,7 @@ public class Preprocess {
 		init();
 		// cleanSpecialCharacter(new File(Wiki_Dump_Dir));
 
-		//extractZhwiki(Output_Dir);
+		//extractEnwiki(Output_Dir);
 		//extractZhwiki(Output_Dir);
 		extractFrwiki(Output_Dir);
 
@@ -53,6 +51,7 @@ public class Preprocess {
 //
 //		trimInfobox("en");
 //		trimInfobox("zh");
+//		trimInfobox("fr");
 
 		//extractMultiInfoboxes(Output_Dir);
 		// statMultiInfoboxes("etc/infobox-stat.dat");
@@ -107,7 +106,10 @@ public class Preprocess {
 				+ language + "wiki-template-name.dat"));
 		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 		for (String template : templates) {
-			template = template.substring(9);
+			if(language.equals("fr")) 
+				template = template.substring(7);
+			else
+				template = template.substring(9);
 			String key = templateNameTrim(template);
 			Set<String> value = map.get(key);
 			if (value == null) {
@@ -147,6 +149,8 @@ public class Preprocess {
 				String type = templateNameTrim(i.getName());
 				if (language.equals("zh") && type.startsWith("模板:"))
 					type = type.substring(3);
+				if (language.equals("fr") && type.startsWith("modèle:"))
+					type = type.substring(7);
 				if (templateSet.contains(type)) {
 					i.setName(type);
 					sb.append(i.toString() + "\t");
@@ -220,22 +224,22 @@ public class Preprocess {
 
 		System.out.println(Wikifr_Dump_Dir);
 
-		//extractFrhwikiTitle(frwikiFilePath, outputDir + "frwiki-title.dat");//
+//		 extractFrhwikiTitle(frwikiFilePath, outputDir + "frwiki-title.dat");//
 //
-//		 extractFrwikiInfobox(frwikiFilePath, outputDir + "frwiki-infobox.dat");//
+//		 extractFrwikiInfobox(frwikiFilePath, outputDir + "frwiki-infobox_new.dat");//
 //		 extractFrwikiCategory(frwikiFilePath, outputDir +"frwiki-category.dat");//
 //		 extractFrwikiCategoryParent(frwikiFilePath, outputDir + "frwiki-category-parent.dat"); //
 
-//		 extractFrwikiText(frwikiFilePath, outputDir + "frwiki-text.dat"); // Stackoverflow error: WikiTextParser:348
+//		 extractFrwikiText(frwikiFilePath, outputDir + "frwiki-text.dat"); //
 
 //		 extractFrwikiLanlinks(frwikiFilePath, outputDir + "frwiki-fr-en-langlink.dat");//
 //
 //		 extractFrwikiCategoryLanlinks(frwikiFilePath, outputDir
 //		 + "frwiki-category-langlink.dat"); //BLANK FILE ???
-		 extractFrwikiRedirect(frwikiFilePath, outputDir +
-		 "frwiki-redirect.dat"); //
-//		 extractFrwikiTemplate(frwikiFilePath, outputDir
-//		 + "frwiki-template-name.dat");//
+//		 extractFrwikiRedirect(frwikiFilePath, outputDir +
+//		 "frwiki-redirect.dat"); //
+		 extractFrwikiTemplate(frwikiFilePath, outputDir
+		 + "frwiki-template-name.dat");//
 
 //		 extractFrwikiOutlink(frwikiFilePath, outputDir +
 //				 "frwiki-outlink.dat");//
@@ -246,9 +250,8 @@ public class Preprocess {
 //		 extractFrwikiLength(frwikiFilePath, outputDir
 //		 + "frwiki-length.dat");
 //
-//		 extractFrwikiLinkText(zhwikiFilePath, outputDir + "frwiki-linktext.dat");
-
-//		extractZhwikiFirstImage(frwikiFilePath,outputDir+"frwiki-firstimage.dat");
+//		 extractFrwikiLinkText(zhwikiFilePath, outputDir + "frwiki-linktext.dat"); 
+//		 extractFrwikiID(frwikiFilePath, outputDir + "frwiki-id.dat");
 	}
 
 	private static void extractEnwiki(String outputDir) throws IOException {
@@ -888,6 +891,17 @@ public class Preprocess {
 //			out.flush();
 //		}
 //		out.close();
+	}
+	
+	public static void extractFrwikiID(String wikiArticle,
+			String outputDir) throws IOException {
+			System.out.println("Start extracting frwiki  ID...");
+			
+			//We use a different wikiArticleFile for this one because it needs to be compatible with the file frwiki-latest-langlinks.sql
+			wikiArticle = "dump/frwiki/frwiki-latest-pages-articles-multistream.xml";
+			IDExtractor ce = new IDExtractor(wikiArticle, outputDir);
+			ce.extract();
+			ce.closeWriter();
 	}
 
 	public static void extractZhwikiTitle(String wikiArticle, String zhTitlePath)
